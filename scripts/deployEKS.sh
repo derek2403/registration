@@ -153,7 +153,7 @@ for i in {1..60}; do
         echo ""
         echo -e "${GREEN}Admin Login:${NC}"
         echo "  URL: http://$EXTERNAL_IP/admin/login"
-        echo "  Password: ALPHV187493?1"
+        echo "  Password: Password"
         break
     fi
     
