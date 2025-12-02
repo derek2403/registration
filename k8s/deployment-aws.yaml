@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registration-app
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: registration-app
+  template:
+    metadata:
+      labels:
+        app: registration-app
+    spec:
+      imagePullSecrets:
+      - name: ecr-registry-secret
+      
+      containers:
+      - name: registration-app
+        image: 557690595475.dkr.ecr.ap-southeast-1.amazonaws.com/registration-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        
+        # Environment variables from secrets
+        envFrom:
+        - secretRef:
+            name: registration-secrets
+        
+        # Health checks
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        
+        # Resource limits
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      
+      # Restart policy
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registration-app-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: registration-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
