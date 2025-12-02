@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registration-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registration-app
+  template:
+    metadata:
+      labels:
+        app: registration-app
+    spec:
+      containers:
+      - name: registration-app
+        image: registration-app:latest
+        imagePullPolicy: Never # Use local image for Minikube/Docker Desktop
+        ports:
+        - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: registration-secrets
