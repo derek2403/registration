@@ -22,7 +22,7 @@ class AdminController extends Controller
             'password' => 'required',
         ]);
 
-        if ($request->password === env('ADMIN_PASSWORD', 'secret')) {
+        if ($request->password === env('ADMIN_PASSWORD')) {
             Session::put('admin_logged_in', true);
             return redirect()->route('admin.dashboard');
         }
