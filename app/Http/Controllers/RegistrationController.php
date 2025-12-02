@@ -23,11 +23,16 @@ class RegistrationController extends Controller
 
     public function register(Request $request)
     {
+        // Compute email hash for blind indexing
+        $emailHash = hash_hmac('sha256', $request->email, config('app.key'));
+        $request->merge(['email_hash' => $emailHash]);
+
         $validated = $request->validate([
             'registration_type' => 'required|in:create_team,join_team,solo',
             'name' => 'required|string|max:255',
             'age' => 'required|integer|min:18',
-            'email' => 'required|email|unique:participants,email',
+            'email' => 'required|email',
+            'email_hash' => 'unique:participants,email_hash',
             'phone' => 'required|string|max:20',
             'gender' => 'required|string',
             'company_name' => 'nullable|string|max:255',
@@ -86,6 +91,7 @@ class RegistrationController extends Controller
             'name' => $request->name,
             'age' => $request->age,
             'email' => $request->email,
+            'email_hash' => $emailHash,
             'phone' => $request->phone,
             'gender' => $request->gender,
             'company_name' => $request->company_name,
@@ -113,6 +119,7 @@ class RegistrationController extends Controller
         $message = 'Registration successful!';
         if ($team) {
             $message .= ' Your Team Code is: ' . $team->code;
+            return redirect()->route('registration.index')->with('success', $message)->with('team_created_code', $team->code);
         }
 
         return redirect()->route('registration.index')->with('success', $message);

@@ -36,26 +36,63 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
 
-        // Group teams by size
+        // Fetch Data
         $teams = Team::with('participants')->get();
-        $teamsBySize = [
-            5 => [],
-            4 => [],
-            3 => [],
-            2 => [],
-            1 => [],
-        ];
-
-        foreach ($teams as $team) {
-            $count = $team->participants->count();
-            if (isset($teamsBySize[$count])) {
-                $teamsBySize[$count][] = $team;
-            }
-        }
-
         $solos = Participant::whereNull('team_id')->get();
 
-        return view('admin.dashboard', compact('teamsBySize', 'solos'));
+        // Use hashes for status checks
+        $approvalListHashes = ApprovalList::pluck('email_hash')->toArray();
+        $rejectionListHashes = RejectionList::pluck('email_hash')->toArray();
+
+        // Get decrypted emails for the UI (Email Actions)
+        $approvalListEmails = ApprovalList::all()->pluck('email')->toArray();
+        $rejectionListEmails = RejectionList::all()->pluck('email')->toArray();
+
+        // Calculate Stats
+        $totalParticipants = Participant::count();
+        $totalTeams = $teams->count();
+        $totalSolo = $solos->count();
+        $acceptedCount = ApprovalList::count();
+        $rejectedCount = RejectionList::count();
+
+        // Mark participants as accepted/rejected for easier frontend logic
+        $teams->each(function ($team) use ($approvalListHashes, $rejectionListHashes) {
+            $acceptedMembers = 0;
+            $rejectedMembers = 0;
+            $totalMembers = $team->participants->count();
+
+            $team->participants->each(function ($p) use ($approvalListHashes, $rejectionListHashes, &$acceptedMembers, &$rejectedMembers) {
+                $p->status = in_array($p->email_hash, $approvalListHashes) ? 'accepted' : (in_array($p->email_hash, $rejectionListHashes) ? 'rejected' : 'pending');
+                if ($p->status === 'accepted')
+                    $acceptedMembers++;
+                if ($p->status === 'rejected')
+                    $rejectedMembers++;
+            });
+
+            if ($totalMembers > 0 && $acceptedMembers === $totalMembers) {
+                $team->status = 'accepted';
+            } elseif ($rejectedMembers > 0) {
+                $team->status = 'rejected';
+            } else {
+                $team->status = 'pending';
+            }
+        });
+
+        $solos->each(function ($p) use ($approvalListHashes, $rejectionListHashes) {
+            $p->status = in_array($p->email_hash, $approvalListHashes) ? 'accepted' : (in_array($p->email_hash, $rejectionListHashes) ? 'rejected' : 'pending');
+        });
+
+        return view('admin.dashboard', compact(
+            'teams',
+            'solos',
+            'totalParticipants',
+            'totalTeams',
+            'totalSolo',
+            'acceptedCount',
+            'rejectedCount',
+            'approvalListEmails',
+            'rejectionListEmails'
+        ));
     }
 
     public function approve(Request $request)
@@ -65,8 +102,9 @@ class AdminController extends Controller
 
         $emails = $request->input('emails', []);
         foreach ($emails as $email) {
-            ApprovalList::firstOrCreate(['email' => $email]);
-            RejectionList::where('email', $email)->delete();
+            $hash = hash_hmac('sha256', $email, config('app.key'));
+            ApprovalList::firstOrCreate(['email_hash' => $hash], ['email' => $email]);
+            RejectionList::where('email_hash', $hash)->delete();
         }
 
         return back()->with('success', 'Participants approved.');
@@ -79,8 +117,9 @@ class AdminController extends Controller
 
         $emails = $request->input('emails', []);
         foreach ($emails as $email) {
-            RejectionList::firstOrCreate(['email' => $email]);
-            ApprovalList::where('email', $email)->delete();
+            $hash = hash_hmac('sha256', $email, config('app.key'));
+            RejectionList::firstOrCreate(['email_hash' => $hash], ['email' => $email]);
+            ApprovalList::where('email_hash', $hash)->delete();
         }
 
         return back()->with('success', 'Participants rejected.');
@@ -103,9 +142,25 @@ class AdminController extends Controller
         ];
 
         $columns = [
-            'ID', 'Team Code', 'Team Name', 'Name', 'Email', 'Phone', 'Age', 'Gender', 
-            'Role', 'Company', 'Portfolio', 'LinkedIn', 'Experience', 'Background', 
-            'T-Shirt', 'Dietary', 'Looking for Job', 'Resume Path', 'Registered At'
+            'ID',
+            'Team Code',
+            'Team Name',
+            'Name',
+            'Email',
+            'Phone',
+            'Age',
+            'Gender',
+            'Role',
+            'Company',
+            'Portfolio',
+            'LinkedIn',
+            'Experience',
+            'Background',
+            'T-Shirt',
+            'Dietary',
+            'Looking for Job',
+            'Resume Path',
+            'Registered At'
         ];
 
         $callback = function () use ($participants, $columns) {

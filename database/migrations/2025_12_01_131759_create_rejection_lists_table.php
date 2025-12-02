@@ -12,7 +12,8 @@ return new class extends Migration {
     {
         Schema::create('rejection_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
+            $table->text('email'); // Encrypted
+            $table->string('email_hash')->unique(); // Blind Index
             $table->timestamps();
         });
     }

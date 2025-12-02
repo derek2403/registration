@@ -13,19 +13,20 @@ return new class extends Migration {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id')->nullable()->constrained()->onDelete('set null');
-            $table->string('name');
+            $table->text('name'); // Encrypted
             $table->integer('age');
-            $table->string('email');
-            $table->string('phone');
+            $table->text('email'); // Encrypted
+            $table->string('email_hash')->index(); // Blind Index
+            $table->text('phone'); // Encrypted
             $table->string('gender');
-            $table->string('company_name')->nullable();
+            $table->text('company_name')->nullable(); // Encrypted
             $table->string('portfolio_url')->nullable();
             $table->string('linkedin_url')->nullable();
             $table->string('role');
             $table->integer('years_of_experience');
-            $table->text('background')->nullable();
+            $table->text('background')->nullable(); // Encrypted
             $table->string('tshirt_size');
-            $table->string('dietary_restrictions')->nullable();
+            $table->text('dietary_restrictions')->nullable(); // Encrypted
             $table->boolean('mandatory_attendance_confirmed')->default(false);
             $table->boolean('looking_for_job')->default(false);
             $table->string('resume_path')->nullable();

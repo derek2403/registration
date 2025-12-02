@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApprovalList extends Model
 {
-    protected $fillable = ['email'];
+    protected $fillable = ['email', 'email_hash'];
+
+    protected $casts = [
+        'email' => 'encrypted',
+    ];
     //
 }

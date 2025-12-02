@@ -11,6 +11,7 @@ class Participant extends Model
         'name',
         'age',
         'email',
+        'email_hash',
         'phone',
         'gender',
         'company_name',
@@ -24,6 +25,17 @@ class Participant extends Model
         'mandatory_attendance_confirmed',
         'looking_for_job',
         'resume_path',
+    ];
+
+    protected $casts = [
+        'name' => 'encrypted',
+        'email' => 'encrypted',
+        'phone' => 'encrypted',
+        'company_name' => 'encrypted',
+        'background' => 'encrypted',
+        'dietary_restrictions' => 'encrypted',
+        'mandatory_attendance_confirmed' => 'boolean',
+        'looking_for_job' => 'boolean',
     ];
 
     public function team()

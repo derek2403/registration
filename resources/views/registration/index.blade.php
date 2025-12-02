@@ -128,7 +128,7 @@
                             <input class="{{ $inputClass }}" id="portfolio_url" type="url" name="portfolio_url" value="{{ old('portfolio_url') }}" placeholder="https://portfolio.com">
                         </label>
                         <label class="{{ $labelClass }} w-full" for="linkedin_url">
-                            LinkedIn URL <span class="font-normal text-neutral-500">(Optional)</span>
+                            LinkedIn URL (Optional)
                             <input class="{{ $inputClass }}" id="linkedin_url" type="url" name="linkedin_url" value="{{ old('linkedin_url') }}" placeholder="https://linkedin.com/in/jane">
                         </label>
                     </div>
@@ -208,6 +208,40 @@
             </form>
         </div>
     </div>
+
+    <!-- Team Code Modal -->
+    @if(session('team_created_code'))
+        <div id="teamCodeModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 text-center">
+                <div class="mb-4 flex justify-center">
+                    <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Team Created Successfully!</h3>
+                <p class="text-gray-600 mb-6">Share this code with your teammates so they can join your team.</p>
+                
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 mb-6 flex items-center justify-between">
+                    <span class="font-mono text-xl font-bold text-gray-900 tracking-wider" id="teamCodeDisplay">{{ session('team_created_code') }}</span>
+                    <button onclick="copyTeamCode()" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        Copy
+                    </button>
+                </div>
+
+                <button onclick="document.getElementById('teamCodeModal').remove()" class="w-full bg-[#1c152b] text-white font-semibold py-3 px-4 rounded-xl hover:bg-[#1c152b]/90 transition">
+                    Done
+                </button>
+            </div>
+        </div>
+        <script>
+            function copyTeamCode() {
+                const code = document.getElementById('teamCodeDisplay').innerText;
+                navigator.clipboard.writeText(code);
+                alert('Team code copied to clipboard!');
+            }
+        </script>
+    @endif
 
     <script>
         function toggleForm() {
