@@ -108,12 +108,17 @@ class RegistrationController extends Controller
         ]);
 
         // Send Emails
-        if ($request->registration_type === 'create_team') {
-            Mail::to($participant->email)->send(new TeamCreated($team, $participant));
-        } elseif ($request->registration_type === 'join_team') {
-            Mail::to($participant->email)->send(new TeamJoined($team, $participant));
-        } else {
-            Mail::to($participant->email)->send(new SoloRegistered($participant));
+        try {
+            if ($request->registration_type === 'create_team') {
+                Mail::to($participant->email)->send(new TeamCreated($team, $participant));
+            } elseif ($request->registration_type === 'join_team') {
+                Mail::to($participant->email)->send(new TeamJoined($team, $participant));
+            } else {
+                Mail::to($participant->email)->send(new SoloRegistered($participant));
+            }
+        } catch (\Exception $e) {
+            // Log the error or handle it gracefully
+            // \Log::error('Email sending failed: ' . $e->getMessage());
         }
 
         $message = 'Registration successful!';
