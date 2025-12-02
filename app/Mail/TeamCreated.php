@@ -28,7 +28,8 @@ class TeamCreated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Hackathon Registration Confirmed – Team Created',
+            subject: 'FinHack Confirmation – Team Created',
+            from: new \Illuminate\Mail\Mailables\Address(config('mail.from.address'), 'FinHack confirmation'),
         );
     }
 

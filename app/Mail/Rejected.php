@@ -8,33 +8,38 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
-class SoloRegistered extends Mailable
+class Rejected extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $participant;
-
-    public function __construct($participant)
+    public function __construct()
     {
-        $this->participant = $participant;
+        //
     }
 
+    /**
+     * Get the message envelope.
+     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'FinHack Confirmation – Solo',
-            from: new \Illuminate\Mail\Mailables\Address(config('mail.from.address'), 'FinHack confirmation'),
+            subject: 'FinHack Confirmation – Update on your application',
+            from: new Address(config('mail.from.address'), 'FinHack confirmation'),
         );
     }
 
+    /**
+     * Get the message content definition.
+     */
     public function content(): Content
     {
         return new Content(
-            view: 'emails.solo_registered',
+            view: 'emails.rejected',
         );
     }
 

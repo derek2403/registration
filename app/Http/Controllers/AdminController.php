@@ -125,6 +125,37 @@ class AdminController extends Controller
         return back()->with('success', 'Participants rejected.');
     }
 
+    public function sendEmails()
+    {
+        if (!Session::get('admin_logged_in'))
+            abort(403);
+
+        $approvalEmails = ApprovalList::all()->pluck('email');
+        $rejectionEmails = RejectionList::all()->pluck('email');
+
+        $sentCount = 0;
+
+        foreach ($approvalEmails as $email) {
+            try {
+                \Illuminate\Support\Facades\Mail::to($email)->send(new \App\Mail\Shortlisted());
+                $sentCount++;
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error("Failed to send shortlisted email to $email: " . $e->getMessage());
+            }
+        }
+
+        foreach ($rejectionEmails as $email) {
+            try {
+                \Illuminate\Support\Facades\Mail::to($email)->send(new \App\Mail\Rejected());
+                $sentCount++;
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error("Failed to send rejection email to $email: " . $e->getMessage());
+            }
+        }
+
+        return back()->with('success', "Bulk emails sent to $sentCount participants.");
+    }
+
     public function export()
     {
         if (!Session::get('admin_logged_in'))

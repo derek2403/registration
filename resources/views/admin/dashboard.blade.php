@@ -289,7 +289,6 @@
                     <div class="flex gap-2">
                         <input type="text" readonly value="{{ implode(', ', $approvalListEmails) }}" class="flex-1 rounded-lg border-gray-300 bg-gray-50 text-sm" id="acceptedEmails">
                         <button onclick="copyToClipboard('acceptedEmails')" class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100">Copy</button>
-                        <a href="mailto:?bcc={{ implode(',', $approvalListEmails) }}" class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200">Mail</a>
                     </div>
                 </div>
                 <div>
@@ -297,11 +296,14 @@
                     <div class="flex gap-2">
                         <input type="text" readonly value="{{ implode(', ', $rejectionListEmails) }}" class="flex-1 rounded-lg border-gray-300 bg-gray-50 text-sm" id="rejectedEmails">
                         <button onclick="copyToClipboard('rejectedEmails')" class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100">Copy</button>
-                        <a href="mailto:?bcc={{ implode(',', $rejectionListEmails) }}" class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200">Mail</a>
                     </div>
                 </div>
             </div>
-            <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
+            <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                <form action="{{ route('admin.send_emails') }}" method="POST" onsubmit="return confirm('Are you sure you want to send emails to all accepted and rejected participants?');">
+                    @csrf
+                    <button type="submit" class="px-4 py-2 bg-[#1c152b] text-white rounded-xl hover:bg-[#1c152b]/90">Send Emails</button>
+                </form>
                 <button onclick="closeModal('emailModal')" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">Close</button>
             </div>
         </div>

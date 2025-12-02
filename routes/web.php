@@ -16,5 +16,6 @@ Route::middleware(['web'])->group(function () {
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/admin/approve', [AdminController::class, 'approve'])->name('admin.approve');
     Route::post('/admin/reject', [AdminController::class, 'reject'])->name('admin.reject');
+    Route::post('/admin/send-emails', [AdminController::class, 'sendEmails'])->name('admin.send_emails');
     Route::get('/admin/export', [AdminController::class, 'export'])->name('admin.export');
 });

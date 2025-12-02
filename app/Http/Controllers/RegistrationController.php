@@ -121,7 +121,7 @@ class RegistrationController extends Controller
             // \Log::error('Email sending failed: ' . $e->getMessage());
         }
 
-        $message = 'Registration successful!';
+        $message = 'Registration successful! Please check your spam folder for the confirmation email.';
         if ($team) {
             $message .= ' Your Team Code is: ' . $team->code;
             return redirect()->route('registration.index')->with('success', $message)->with('team_created_code', $team->code);
