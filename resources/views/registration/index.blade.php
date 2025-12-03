@@ -117,14 +117,14 @@
                             </select>
                         </label>
                         <label class="{{ $labelClass }} w-full" for="company_name">
-                            Company Name
-                            <input class="{{ $inputClass }}" id="company_name" type="text" name="company_name" value="{{ old('company_name') }}" placeholder="Acme Inc.">
+                            Company / University Name
+                            <input class="{{ $inputClass }}" id="company_name" type="text" name="company_name" value="{{ old('company_name') }}" placeholder="Acme Inc." required>
                         </label>
                     </div>
 
                     <div class="flex flex-col gap-4 md:flex-row">
                         <label class="{{ $labelClass }} w-full" for="portfolio_url">
-                            Portfolio URL
+                            Portfolio / GitHub URL
                             <input class="{{ $inputClass }}" id="portfolio_url" type="url" name="portfolio_url" value="{{ old('portfolio_url') }}" placeholder="https://portfolio.com">
                         </label>
                         <label class="{{ $labelClass }} w-full" for="linkedin_url">
@@ -154,7 +154,7 @@
                     <div>
                         <label class="{{ $labelClass }}" for="background">
                             Development Background
-                            <textarea class="{{ $inputClass }} resize-none" id="background" name="background" rows="3" placeholder="Tell us something you built that you are proud of">{{ old('background') }}</textarea>
+                            <textarea required class="{{ $inputClass }} resize-none" id="background" name="background" rows="3" placeholder="Tell us something you built that you are proud of">{{ old('background') }}</textarea>
                         </label>
                     </div>
 
@@ -172,7 +172,7 @@
                         </label>
                         <label class="{{ $labelClass }} w-full" for="dietary_restrictions">
                             Dietary Restrictions
-                            <input class="{{ $inputClass }}" id="dietary_restrictions" type="text" name="dietary_restrictions" value="{{ old('dietary_restrictions') }}" placeholder="None">
+                            <input required class="{{ $inputClass }}" id="dietary_restrictions" type="text" name="dietary_restrictions" value="{{ old('dietary_restrictions') }}" placeholder="None">
                         </label>
                     </div>
 

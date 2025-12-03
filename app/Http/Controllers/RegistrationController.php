@@ -35,14 +35,14 @@ class RegistrationController extends Controller
             'email_hash' => 'unique:participants,email_hash',
             'phone' => 'required|string|max:20',
             'gender' => 'required|string',
-            'company_name' => 'nullable|string|max:255',
+            'company_name' => 'required|string|max:255',
             'portfolio_url' => 'nullable|url',
             'linkedin_url' => 'nullable|url',
             'role' => 'required|string',
             'years_of_experience' => 'required|integer|min:0',
-            'background' => 'nullable|string',
+            'background' => 'required|string',
             'tshirt_size' => 'required|string',
-            'dietary_restrictions' => 'nullable|string',
+            'dietary_restrictions' => 'required|string',
             'mandatory_attendance_confirmed' => 'accepted',
             'looking_for_job' => 'boolean',
             'resume' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
@@ -125,9 +125,17 @@ class RegistrationController extends Controller
         }
 
         $message = 'Registration successful! Please check your spam folder for the confirmation email.';
-        if ($team) {
+
+        // Only show team code modal if user CREATED a team
+        if ($request->registration_type === 'create_team' && $team) {
             $message .= ' Your Team Code is: ' . $team->code;
             return redirect()->route('registration.index')->with('success', $message)->with('team_created_code', $team->code);
+        }
+
+        // Show team info if user JOINED a team
+        if ($request->registration_type === 'join_team' && $team) {
+            $currentCount = $team->participants()->count();
+            $message = "Successfully joined team '{$team->name}'! Currently {$currentCount}/5 members. Share the team code ({$team->code}) to invite more participants while it is still available.";
         }
 
         return redirect()->route('registration.index')->with('success', $message);
