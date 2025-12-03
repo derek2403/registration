@@ -29,22 +29,12 @@ echo -e "${GREEN}✓ Authenticated${NC}"
 
 # 2. Tag the local image for public ECR
 echo -e "\n${YELLOW}Tagging image...${NC}"
-if [ "$VERSION" = "latest" ]; then
-    docker tag registration-app:latest $ECR_PUBLIC:latest
-else
-    docker tag registration-app:${VERSION} $ECR_PUBLIC:${VERSION}
-    docker tag registration-app:${VERSION} $ECR_PUBLIC:latest
-fi
+docker tag registration-app:${VERSION} $ECR_PUBLIC:${VERSION}
 echo -e "${GREEN}✓ Tagged${NC}"
 
-# 3. Push to Public ECR
+# 3. Push to Public ECR (version tag only)
 echo -e "\n${YELLOW}Pushing to Public ECR...${NC}"
-if [ "$VERSION" = "latest" ]; then
-    docker push $ECR_PUBLIC:latest
-else
-    docker push $ECR_PUBLIC:${VERSION}
-    docker push $ECR_PUBLIC:latest
-fi
+docker push $ECR_PUBLIC:${VERSION}
 echo -e "${GREEN}✓ Pushed${NC}"
 
 echo -e "\n${GREEN}=============================="
