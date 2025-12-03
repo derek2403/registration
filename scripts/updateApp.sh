@@ -13,12 +13,15 @@ REGION="ap-southeast-1"
 CLUSTER_NAME="registration-cluster1"
 ECR_REPO="557690595475.dkr.ecr.ap-southeast-1.amazonaws.com/registration-app"
 
+# Generate version tag (timestamp format: YYYYMMDD-HHMMSS)
+VERSION=$(date +%Y%m%d-%H%M%S)
 echo -e "${GREEN}🔄 Updating Registration App${NC}"
 echo "=============================="
+echo -e "Version: ${YELLOW}${VERSION}${NC}\n"
 
 # 1. Build new image
-echo -e "\n${YELLOW}Building new image...${NC}"
-docker build --platform linux/amd64 -t registration-app:latest .
+echo -e "${YELLOW}Building new image...${NC}"
+docker build --platform linux/amd64 -t registration-app:${VERSION} .
 echo -e "${GREEN}✓ Build complete${NC}"
 
 # 2. Login to ECR
@@ -28,16 +31,18 @@ aws ecr get-login-password --region $REGION | \
     557690595475.dkr.ecr.$REGION.amazonaws.com
 echo -e "${GREEN}✓ Authenticated${NC}"
 
-# 3. Tag and push
+# 3. Tag and push with version AND latest
 echo -e "\n${YELLOW}Pushing to ECR...${NC}"
-docker tag registration-app:latest $ECR_REPO:latest
+docker tag registration-app:${VERSION} $ECR_REPO:${VERSION}
+docker tag registration-app:${VERSION} $ECR_REPO:latest
+docker push $ECR_REPO:${VERSION}
 docker push $ECR_REPO:latest
-echo -e "${GREEN}✓ Pushed to ECR${NC}"
+echo -e "${GREEN}✓ Pushed version ${VERSION} to ECR${NC}"
 
-# 4. Update Kubernetes
+# 4. Update Kubernetes with specific version
 echo -e "\n${YELLOW}Updating Kubernetes deployment...${NC}"
-kubectl rollout restart deployment/registration-app
-echo -e "${GREEN}✓ Deployment restarting${NC}"
+kubectl set image deployment/registration-app registration-app=${ECR_REPO}:${VERSION}
+echo -e "${GREEN}✓ Deployment updated to version ${VERSION}${NC}"
 
 # 5. Wait for rollout
 echo -e "\n${YELLOW}Waiting for rollout to complete...${NC}"
