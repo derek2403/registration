@@ -2,7 +2,7 @@
 
 @section('content')
     @php
-        $inputClass = "mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0400fe]";
+        $inputClass = "mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0064C8]";
         $labelClass = "flex flex-col text-sm text-neutral-700 font-medium";
         $helperClass = "text-xs text-neutral-500 font-normal";
     @endphp
@@ -11,7 +11,7 @@
         <div class="shadow-input w-full max-w-[70%] rounded-2xl border border-black/5 bg-white p-4 text-left md:p-6 shadow-lg">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold tracking-tight">
-                    <span class="text-[#0400fe]">Hackathon</span> Registration
+                    <span class="text-[#0064C8]">Hackathon</span> Registration
                 </h1>
                 <p class="mt-2 text-neutral-600">
                     Join us for an amazing event. Create a team, join one, or go solo.
@@ -28,17 +28,17 @@
                     </label>
                     <div class="mt-3 flex flex-col sm:flex-row gap-4">
                         <label class="inline-flex items-center cursor-pointer">
-                            <input type="radio" class="form-radio text-[#0400fe] focus:ring-[#0400fe]" name="registration_type" value="create_team"
+                            <input type="radio" class="form-radio text-[#0064C8] focus:ring-[#0064C8]" name="registration_type" value="create_team"
                                 onchange="toggleForm()" {{ old('registration_type') == 'create_team' ? 'checked' : '' }}>
                             <span class="ml-2 text-sm text-neutral-700">Create a Team</span>
                         </label>
                         <label class="inline-flex items-center cursor-pointer">
-                            <input type="radio" class="form-radio text-[#0400fe] focus:ring-[#0400fe]" name="registration_type" value="join_team"
+                            <input type="radio" class="form-radio text-[#0064C8] focus:ring-[#0064C8]" name="registration_type" value="join_team"
                                 onchange="toggleForm()" {{ old('registration_type') == 'join_team' || $teamCode ? 'checked' : '' }}>
                             <span class="ml-2 text-sm text-neutral-700">Join a Team</span>
                         </label>
                         <label class="inline-flex items-center cursor-pointer">
-                            <input type="radio" class="form-radio text-[#0400fe] focus:ring-[#0400fe]" name="registration_type" value="solo" onchange="toggleForm()"
+                            <input type="radio" class="form-radio text-[#0064C8] focus:ring-[#0064C8]" name="registration_type" value="solo" onchange="toggleForm()"
                                 {{ old('registration_type') == 'solo' ? 'checked' : '' }}>
                             <span class="ml-2 text-sm text-neutral-700">Register Solo</span>
                         </label>
@@ -178,7 +178,7 @@
 
                     <div>
                         <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" class="form-checkbox text-[#0400fe] focus:ring-[#0400fe] rounded" name="mandatory_attendance_confirmed" required {{ old('mandatory_attendance_confirmed') ? 'checked' : '' }}>
+                            <input type="checkbox" class="form-checkbox text-[#0064C8] focus:ring-[#0064C8] rounded" name="mandatory_attendance_confirmed" required {{ old('mandatory_attendance_confirmed') ? 'checked' : '' }}>
                             <span class="ml-2 text-sm text-neutral-700">I confirm mandatory attendance on 7–8 Feb 2026</span>
                         </label>
                     </div>
@@ -186,7 +186,7 @@
                     <div>
                         <label class="flex items-center cursor-pointer">
                             <input type="hidden" name="looking_for_job" value="0">
-                            <input type="checkbox" class="form-checkbox text-[#0400fe] focus:ring-[#0400fe] rounded" name="looking_for_job" id="looking_for_job" value="1"
+                            <input type="checkbox" class="form-checkbox text-[#0064C8] focus:ring-[#0064C8] rounded" name="looking_for_job" id="looking_for_job" value="1"
                                 onchange="toggleResume()" {{ old('looking_for_job') ? 'checked' : '' }}>
                             <span class="ml-2 text-sm text-neutral-700">Looking for job?</span>
                         </label>
@@ -195,12 +195,12 @@
                     <div class="hidden" id="resumeField">
                         <label class="{{ $labelClass }}" for="resume">
                             Upload Resume <span class="font-normal text-neutral-500">(Required if looking for job)</span>
-                            <input class="{{ $inputClass }} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#1c152b]/10 file:text-[#1c152b] hover:file:bg-[#1c152b]/20" id="resume" type="file" name="resume">
+                            <input class="{{ $inputClass }} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#003064]/10 file:text-[#003064] hover:file:bg-[#003064]/20" id="resume" type="file" name="resume">
                         </label>
                     </div>
 
                     <button
-                        class="mt-6 w-full rounded-xl bg-[#1c152b] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1c152b]/90 disabled:opacity-50"
+                        class="mt-6 w-full rounded-xl bg-[#003064] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#FFAF00] hover:text-[#003064] disabled:opacity-50"
                         type="submit">
                         Register
                     </button>
@@ -229,7 +229,7 @@
                     </button>
                 </div>
 
-                <button onclick="document.getElementById('teamCodeModal').remove()" class="w-full bg-[#1c152b] text-white font-semibold py-3 px-4 rounded-xl hover:bg-[#1c152b]/90 transition">
+                <button onclick="document.getElementById('teamCodeModal').remove()" class="w-full bg-[#0064C8] text-white font-semibold py-3 px-4 rounded-xl hover:bg-[#FFAF00] hover:text-[#003064] transition">
                     Done
                 </button>
             </div>

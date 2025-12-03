@@ -12,7 +12,7 @@
                 <button onclick="openEmailModal()" class="bg-white border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-xl shadow-sm hover:bg-gray-50 transition">
                     Email Actions
                 </button>
-                <a href="{{ route('admin.export') }}" class="bg-[#1c152b] hover:bg-[#1c152b]/90 text-white font-medium py-2 px-4 rounded-xl shadow-sm transition flex items-center gap-2">
+                <a href="{{ route('admin.export') }}" class="bg-[#003064] hover:bg-[#FFAF00] hover:text-[#003064] text-white font-medium py-2 px-4 rounded-xl shadow-sm transition flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                     Export CSV
                 </a>
@@ -42,7 +42,7 @@
         <!-- Tabs -->
         <div class="mb-6 border-b border-gray-200">
             <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                <button onclick="switchTab('team-view')" id="tab-team-view" class="border-[#0400fe] text-[#0400fe] whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                <button onclick="switchTab('team-view')" id="tab-team-view" class="border-[#0064C8] text-[#0064C8] whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
                     Team View
                 </button>
                 <button onclick="switchTab('individual-view')" id="tab-individual-view" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
@@ -61,7 +61,7 @@
                         
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="text-lg font-bold text-gray-900 group-hover:text-[#0400fe] transition-colors">{{ $team->name }}</h3>
+                                <h3 class="text-lg font-bold text-gray-900 group-hover:text-[#0064C8] transition-colors">{{ $team->name }}</h3>
                                 <p class="text-xs text-gray-500 font-mono mt-1">{{ $team->code }}</p>
                             </div>
                             <div class="flex items-center gap-2">
@@ -230,7 +230,7 @@
     </div>
 
     <!-- Participant Modal -->
-    <div id="participantModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+    <div id="participantModal" class="fixed inset-0 bg-black/50 hidden z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h3 class="text-xl font-bold text-gray-900">Participant Details</h3>
@@ -302,7 +302,7 @@
             <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
                 <form action="{{ route('admin.send_emails') }}" method="POST" onsubmit="return confirm('Are you sure you want to send emails to all accepted and rejected participants?');">
                     @csrf
-                    <button type="submit" class="px-4 py-2 bg-[#1c152b] text-white rounded-xl hover:bg-[#1c152b]/90">Send Emails</button>
+                    <button type="submit" class="px-4 py-2 bg-[#003064] text-white rounded-xl hover:bg-[#FFAF00] hover:text-[#003064]">Send Emails</button>
                 </form>
                 <button onclick="closeModal('emailModal')" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">Close</button>
             </div>
@@ -320,10 +320,10 @@
                 const btn = document.getElementById('tab-' + id);
                 if (id === tabId) {
                     btn.classList.remove('border-transparent', 'text-gray-500');
-                    btn.classList.add('border-[#0400fe]', 'text-[#0400fe]');
+                    btn.classList.add('border-[#0064C8]', 'text-[#0064C8]');
                 } else {
                     btn.classList.add('border-transparent', 'text-gray-500');
-                    btn.classList.remove('border-[#0400fe]', 'text-[#0400fe]');
+                    btn.classList.remove('border-[#0064C8]', 'text-[#0064C8]');
                 }
             });
         }

@@ -54,6 +54,9 @@ class RegistrationController extends Controller
 
             // Join Team
             'team_code' => 'required_if:registration_type,join_team|nullable|exists:teams,code',
+        ], [
+            // Custom message to prevent email enumeration
+            'email_hash.unique' => 'Registration could not be completed. Please contact support if you believe this is an error.',
         ]);
 
         if ($request->looking_for_job && !$request->hasFile('resume')) {
